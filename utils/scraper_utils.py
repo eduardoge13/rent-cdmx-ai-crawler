@@ -86,6 +86,8 @@ async def check_no_results(
 
     return False
 
+# last page function
+last_page = None
 async def is_same_page_as_previous(page_identifier: str) -> bool:
     """
     Checks if the current page being crawled is the same as the previous one.

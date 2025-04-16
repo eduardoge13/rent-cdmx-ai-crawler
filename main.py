@@ -27,7 +27,6 @@ async def crawl_venues():
 
     # Initialize state variables
     page_number = 1
-    last_page = None
     all_venues = []
     seen_names = set()
 
