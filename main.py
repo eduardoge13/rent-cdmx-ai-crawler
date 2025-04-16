@@ -23,10 +23,11 @@ async def crawl_venues():
     # Initialize configurations
     browser_config = get_browser_config()
     llm_strategy = get_llm_strategy()
-    session_id = "venue_crawl_session"
+    session_id = "house_crawl_session"
 
     # Initialize state variables
     page_number = 1
+    last_page = None
     all_venues = []
     seen_names = set()
 
@@ -47,18 +48,18 @@ async def crawl_venues():
             )
 
             if no_results_found:
-                print("No more venues found. Ending crawl.")
-                break  # Stop crawling when "No Results Found" message appears
+                print("No more pages available. Ending crawl.")
+                break  # Stop crawling when the page is the same as before
 
             if not venues:
-                print(f"No venues extracted from page {page_number}.")
-                break  # Stop if no venues are extracted
+                print(f"No houses or departments extracted from page {page_number}.")
+                break  # Stop if no houses are extracted
 
             # Add the venues from this page to the total list
             all_venues.extend(venues)
             page_number += 1  # Move to the next page
 
-            # Pause between requests to be polite and avoid rate limits
+            # Pause
             await asyncio.sleep(2)  # Adjust sleep time as needed
 
     # Save the collected venues to a CSV file
