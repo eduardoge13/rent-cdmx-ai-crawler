@@ -1,6 +1,8 @@
-# Deep Seek Crawler
+# Deep Seek Crawler - Tweked by Lalo
 
-This project is a branch of the web crawler built with Python that extracts venue data, this versión extracts data from 
+This project is a branch of the web crawler built with Python that extracts venue data, this versión extracts data from a placeholder URL and uses the same LLM strategy for extracting house and department information.
+The scraper_utils.py script is modified to extract different fields but its the same LLM strategy, additional, there is a new function created that checks if the page crawled is the same as the previous crawl and if this is True then it signals the scraper to stop.
+This is a test branch and it has yet to be tested on a site.
 
 ## Features
 
@@ -15,7 +17,7 @@ This project is a branch of the web crawler built with Python that extracts venu
 ├── main.py # Main entry point for the crawler
 ├── config.py # Contains configuration constants (Base URL, CSS selectors, etc.)
 ├── models
-│ └── venue.py # Defines the Venue data model using Pydantic
+│ └── house.py # Defines the House data model using Pydantic
 ├── utils
 │ ├── init.py # (Empty) Package marker for utils
 │ ├── data_utils.py # Utility functions for processing and saving data
