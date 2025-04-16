@@ -1,13 +1,13 @@
 # config.py
 
-BASE_URL = "https://www.theknot.com/marketplace/wedding-reception-venues-atlanta-ga"
-CSS_SELECTOR = "[class^='info-container']"
+BASE_URL = "https://www.inmuebles24.com/departamentos-en-renta-en-ciudad-de-mexico"
+CSS_SELECTOR = "[class^='postingCard-module__posting-top']"
 REQUIRED_KEYS = [
-    "name",
-    "price",
-    "location",
-    "capacity",
-    "rating",
-    "reviews",
-    "description",
+    "Address",
+    "Price",
+    "Rooms",
+    "Neighborhood",
+    "City_Province",
+    "Square_foot_units_square_meters",
+    "Commodities",
 ]

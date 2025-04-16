@@ -10,7 +10,7 @@ from crawl4ai import (
     LLMExtractionStrategy,
 )
 
-from models.venue import Venue
+from models.house import Venue
 from utils.data_utils import is_complete_venue, is_duplicate_venue
 
 
@@ -43,9 +43,8 @@ def get_llm_strategy() -> LLMExtractionStrategy:
         schema=Venue.model_json_schema(),  # JSON schema of the data model
         extraction_type="schema",  # Type of extraction to perform
         instruction=(
-            "Extract all venue objects with 'name', 'location', 'price', 'capacity', "
-            "'rating', 'reviews', and a 1 sentence description of the venue from the "
-            "following content."
+            "Extract all department/house objects with 'Address', 'Price', 'Rooms', "
+            "'Neighborhod', 'City/Province', 'Square foot/units/square meters', 'Commodities'"
         ),  # Instructions for the LLM
         input_format="markdown",  # Format of the input content
         verbose=True,  # Enable verbose logging
@@ -58,7 +57,7 @@ async def check_no_results(
     session_id: str,
 ) -> bool:
     """
-    Checks if the "No Results Found" message is present on the page.
+    Checks if the page its crawling is the same as the previous crawl
 
     Args:
         crawler (AsyncWebCrawler): The web crawler instance.
@@ -78,7 +77,7 @@ async def check_no_results(
     )
 
     if result.success:
-        if "No Results Found" in result.cleaned_html:
+        if "No Results Found" in result.cleaned_html: #Change it so it adapts to the new URL
             return True
     else:
         print(
@@ -87,6 +86,27 @@ async def check_no_results(
 
     return False
 
+async def is_same_page_as_previous(page_identifier: str) -> bool:
+    """
+    Checks if the current page being crawled is the same as the previous one.
+
+    Args:
+        page_identifier (str): The unique identifier for the current page (e.g., URL or page number).
+
+    Returns:
+        bool: True if the current page is the same as the previous one, False otherwise.
+    """
+    global last_page
+
+    # Compare the current page identifier with the last crawled page
+    if last_page == page_identifier:
+        print(f"Page {page_identifier} is the same as the previous crawl.")
+        return True
+
+    # Update the last crawled page identifier
+    last_page = page_identifier
+    return False
+    
 
 async def fetch_and_process_page(
     crawler: AsyncWebCrawler,
@@ -99,7 +119,7 @@ async def fetch_and_process_page(
     seen_names: Set[str],
 ) -> Tuple[List[dict], bool]:
     """
-    Fetches and processes a single page of venue data.
+    Fetches and processes a single page of department/house data.
 
     Args:
         crawler (AsyncWebCrawler): The web crawler instance.
@@ -116,12 +136,12 @@ async def fetch_and_process_page(
             - List[dict]: A list of processed venues from the page.
             - bool: A flag indicating if the "No Results Found" message was encountered.
     """
-    url = f"{base_url}?page={page_number}"
+    url = f"{base_url}-pagina-{page_number}.html"
     print(f"Loading page {page_number}...")
 
     # Check if "No Results Found" message is present
-    no_results = await check_no_results(crawler, url, session_id)
-    if no_results:
+    if await is_same_page_as_previous(url):
+        print(f"Skipping page {page_number} as it is the same as the previous crawl.")  
         return [], True  # No more results, signal to stop crawling
 
     # Fetch page content with the extraction strategy
