@@ -1,6 +1,6 @@
 # config.py
 
-BASE_URL = "foo-bar.com"
+BASE_URL = "https://www.inmuebles24.com/inmuebles-en-renta-en-ciudad-de-mexico"
 CSS_SELECTOR = "[class^='postingCard-module__posting-top']"
 REQUIRED_KEYS = [
     "Address",
@@ -10,4 +10,5 @@ REQUIRED_KEYS = [
     "City_Province",
     "Square_foot_units_square_meters",
     "Commodities",
+    "Notas"
 ]

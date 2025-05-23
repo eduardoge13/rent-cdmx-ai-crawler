@@ -13,3 +13,4 @@ class House(BaseModel):
     City_Province: str
     Square_foot_units_square_meters: int
     Commodities: str
+    Notas: str = None  # Optional field for additional notes

@@ -42,10 +42,25 @@ def get_llm_strategy() -> LLMExtractionStrategy:
         api_token=os.getenv("GROQ_API_KEY"),  # API token for authentication
         schema=House.model_json_schema(),  # JSON schema of the data model
         extraction_type="schema",  # Type of extraction to perform
-        instruction=(
-            "Extract all department/house objects with 'Address', 'Price', 'Rooms', "
-            "'Neighborhod', 'City/Province', 'Square foot/units/square meters', 'Commodities'"
-        ),  # Instructions for the LLM
+        instruction="""
+        Extract the following information from the HTML content:
+        - Address
+        - Price
+        - Rooms
+        - Neighborhood
+        - City/Province
+        - Square foot/units/square meters
+        - Commodities
+
+        Return the data as a JSON object with the following keys:
+        - Address
+        - Price
+        - Rooms
+        - Neighborhood
+        - City_Province
+        - Square_foot_units_square_meters
+        - Commodities
+        """,  # Instructions for the LLM
         input_format="markdown",  # Format of the input content
         verbose=True,  # Enable verbose logging
     )
